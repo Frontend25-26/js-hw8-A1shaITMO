@@ -1,7 +1,10 @@
 :root {
     --ml: 0;
     --mb: 0;
+
+    --timeOut: 0.25s
 }
+
 body {
     display: flex;
     justify-content: center;
@@ -45,15 +48,14 @@ body {
 }
 
 .piece {
-    width: 5%;
+    width: 75%;
     aspect-ratio: 1;
     border-radius: 50%;
     border: 2px solid #000;
     box-shadow: 2px 2px 2px #000;
     cursor: pointer;
-    position: absolute;
-    margin-left: var(--ml, 0);
-    margin-bottom: var(--mb, 0);
+
+    transition: transform var(--timeOut) ease;
 }
 
 .piece.white {
@@ -61,6 +63,25 @@ body {
 }
 .piece.black {
     background: #272727;
+}
+
+.piece.ghost {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.piece.selected {
+    outline: 3px solid yellow;
+    outline-offset: -6px;
+}
+
+.piece.dead {
+    animation: fadeOut var(--timeOut) forwards;
+}
+
+@keyframes fadeOut {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(0); opacity: 0; }
 }
 
 
