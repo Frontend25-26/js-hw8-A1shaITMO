@@ -128,7 +128,6 @@ function highlightMoves(cells) {
         const ghost = document.createElement("div");
         ghost.classList.add("piece", "ghost");
         ghost.classList.add(currentPlayer);
-        ghost.dataset.ghost = "1";
         cell.appendChild(ghost);
     });
 }
@@ -164,8 +163,8 @@ function doJump(piece, cell) {
     const enemy = getPieceOnCell(midCell);
     if (enemy) killPiece(enemy);
 
+    lock();
     setTimeout(() => {
-        lock();
         const jumps = getAvailableJumps(piece);
 
         if (jumps.length > 0) {
@@ -177,7 +176,7 @@ function doJump(piece, cell) {
             switchTurn();
         }
         unlock();
-    }, 270);
+    }, 250);
 
     movePiece(piece, cell);
 }
@@ -193,8 +192,8 @@ function movePiece(piece, newCell) {
     piece.dataset.col = newCell.dataset.j;
     selectedPiece = null;
 
+    lock()
     setTimeout(() => {
-        lock()
         piece.style.transform = "none";
         newCell.appendChild(piece);
         unlock()
