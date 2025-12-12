@@ -199,6 +199,7 @@ function movePiece(piece, newCell) {
         unlock()
     }, 250)
 
+    checkWin()
 }
 
 function killPiece(enemy) {
@@ -206,16 +207,29 @@ function killPiece(enemy) {
     enemy.classList.add("dead");
     enemy.addEventListener("animationend", () => {
         enemy.remove();
-        checkWin();
     });
+}
+
+function hasMoves(color) {
+    const allPieces = [...document.querySelectorAll(`.piece.${color}`)];
+
+    for (let piece of allPieces) {
+        if (getAvailableMoves(piece).length > 0) return true;
+        if (getAvailableJumps(piece).length > 0) return true;
+    }
+    return false;
 }
 
 function checkWin() {
     if (pieces.white === 0) showWin("Чёрные");
     if (pieces.black === 0) showWin("Белые");
+    if (!hasMoves(currentPlayer === "white" ? "black" : "white")) showDraw();
 }
 
-function showWin(winner) {
+const showDraw = () => { showOverlay("Ничья!"); }
+const showWin = (winner) => { showOverlay(`Победили: ${winner}!`) }
+
+function showOverlay(text) {
     const msg = document.createElement("div");
     msg.style.position = "absolute";
     msg.style.top = "40%";
@@ -228,6 +242,6 @@ function showWin(winner) {
     msg.style.zIndex = "77";
     msg.style.transform = "translate(-50%, -50%)";
 
-    msg.textContent = `Победили: ${winner}!`;
+    msg.textContent = text;
     board.appendChild(msg);
 }
